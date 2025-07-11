@@ -1,25 +1,49 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase
-from config import Config
-from models import Task
+import datetime
+# from sqlalchemy.orm import DeclarativeBase
+# from config import Config
+# from models import Task
 
 app = Flask(__name__)
-app.config.from_object(Config)
+# app.config.from_object(Config)
 
-db = SQLAlchemy(model_class=Base)
-
-
-
-
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
-
-@app.route("/tasks")
-def show_tasks():
-    return "<li>Go to work</li>"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db' # Location of the db
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # Makes warning message to go away
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
+db = SQLAlchemy(app)
+
+class TodoNote(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    note = db.Column(db.String(100))
+    date_created = db.Column(db.DateTime, default=datetime.now)
+
+# class TodoNote(db.Model):
+#     id = db.Column(db.Integer, primary_key = True)
+#     todo = db.Column(db.String(100), unique=False, nullable=False)
+    
+#     def __repr__(self):
+#         return f'<User {self.username}>'
+
+# with app.app_context():
+#         db.create_all()
+
+
+# new_todo = TodoNote(todo="Send an email to my mother")
+# db.session.add(new_todo)
+# db.session.commit()
+
+# todoNotes = TodoNote.query.all()
+
+
+# @app.route("/")
+# def hello_world():
+#     return "<p>Hello, World!</p>"
+
+# @app.route("/tasks")
+# def show_tasks():
+#     return todoNotes
+
+# if __name__ == "__main__":
+#     app.run(debug=True)
