@@ -19,6 +19,11 @@ class TodoNote(db.Model):
     note = db.Column(db.String(100))
     date_created = db.Column(db.DateTime, default=datetime.now)
 
+    def __init__(self, note, date_created):
+        self.note = note
+        self.date_created = date_created
+        
+        
 # class TodoNote(db.Model):
 #     id = db.Column(db.Integer, primary_key = True)
 #     todo = db.Column(db.String(100), unique=False, nullable=False)
@@ -45,5 +50,8 @@ class TodoNote(db.Model):
 # def show_tasks():
 #     return todoNotes
 
-# if __name__ == "__main__":
-#     app.run(debug=True)
+
+# Create the database if the database doesn't exist.
+if __name__ == "__main__":
+    db.create_all()
+    app.run(debug=True)
